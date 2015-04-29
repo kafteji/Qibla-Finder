@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/rc">
+        <file>background.jpg</file>
+        <file>compass.png</file>
+    </qresource>
+</RCC>
