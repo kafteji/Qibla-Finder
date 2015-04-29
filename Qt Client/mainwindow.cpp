@@ -1,3 +1,15 @@
+/**
+  ******************************************************************************
+  * @file    mainwindow.cpp 
+  * @author  Fahmi Ghediri
+  * @version V1.0
+  * @date    23-April-2015
+  * @brief   contains methods which receives, parses data and calculates 
+  *	     the Qibla direction      
+  ******************************************************************************
+**/
+
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "QMessageBox"
@@ -103,6 +115,8 @@ void MainWindow::on_detect_clicked()
     buffer.append(packet.end);
 
     this->serialPort->write(buffer);
+    this->receivedData.clear();
+
 
 }
 
@@ -114,27 +128,27 @@ qint8 MainWindow::calculate_direction(){
 
     if(this->longitude > MEKKA_LONGITUDE){
 
-        if(angle >= (3*PI/8) )ledNum= 0x65;
+        if(angle >= (3*PI/8) ) return 0x65;
 
-        if((angle < (3*PI/8)) && (angle >= PI/8))ledNum= 0x66;
+        if((angle < (3*PI/8)) && (angle >= PI/8)) return 0x66;
 
-        if(angle < (PI/8) && (angle >= (-PI/8)) )ledNum= 0x67;
+        if(angle < (PI/8) && (angle >= (-PI/8)) ) return 0x67;
 
-        if((angle < (-PI/8)) && (angle >= (3*PI/8))) ledNum = 0x68;
+        if((angle < (-PI/8)) && (angle >= (3*PI/8))) return 0x68;
 
-        if(angle < (3*PI/8) )ledNum= 0x61;
+        if(angle < (3*PI/8) )return 0x61;
 
     } else{
 
-        if(angle >= (3*PI/8) )ledNum= 0x61;
+        if(angle >= (3*PI/8) ) return 0x61;
 
-        if((angle < (3*PI/8)) && (angle >= PI/8))ledNum= 0x62;
+        if((angle < (3*PI/8)) && (angle >= PI/8)) return 0x62;
 
-        if(angle < (PI/8) && (angle >= (-PI/8)) )ledNum= 0x63;
+        if(angle < (PI/8) && (angle >= (-PI/8)) ) return 0x63;
 
-        if((angle < (-PI/8)) && (angle >= (3*PI/8))) ledNum = 0x64;
+        if((angle < (-PI/8)) && (angle >= (3*PI/8))) return 0x64;
 
-        if(angle < (3*PI/8) )ledNum= 0x65;
+        if(angle < (3*PI/8) )return 0x65;
     }
 
     return ledNum;
@@ -202,5 +216,4 @@ void MainWindow::parseData(){
         QMessageBox::critical(this,"Error"," The received data is corrupted please try again !!");
 
     }
-    this->receivedData.clear();
 }
